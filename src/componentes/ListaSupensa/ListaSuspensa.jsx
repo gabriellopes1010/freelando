@@ -44,27 +44,30 @@ export const ListaSuspensa = ({ titulo, opcoes }) => {
     const [estadoAberta, alternarVisibilidade] = useState(false)
     const [opcaoFocada, setOpcaoFocada] = useState(null);
     const [opcaoSelecionada, setOpcaoSelecionada] = useState(null)
-    
+
     const manipularTecladoTeclado = (evento) => {
         alternarVisibilidade(true)
-        switch(evento.key){
+        switch (evento.key) {
             case 'ArrowDown':
                 evento.preventDefault();
                 setOpcaoSelecionada(opcoes[opcaoFocada])
                 setOpcaoFocada(focoAntigo => {
-                    if(focoAntigo == null){
+                    if (focoAntigo == null) {
                         return 0;
+                    }
+                    if (focoAntigo === opcoes.length - 1) {
+                        return opcoes.length - 1
                     }
 
                     return focoAntigo += 1
                 })
                 break;
 
-                case 'ArrowUp':
-                    evento.preventDefault();
-                    setOpcaoSelecionada(opcoes[opcaoFocada])
+            case 'ArrowUp':
+                evento.preventDefault();
+                setOpcaoSelecionada(opcoes[opcaoFocada])
                 setOpcaoFocada(focoAntigo => {
-                    if(!focoAntigo) {
+                    if (!focoAntigo) {
                         return 0;
                     }
 
@@ -72,37 +75,51 @@ export const ListaSuspensa = ({ titulo, opcoes }) => {
                 })
                 break;
 
-                case 'Enter':
-                    evento.preventDefault();
+            case 'Enter':
+                evento.preventDefault();
                 setOpcaoFocada(null)
                 alternarVisibilidade(false)
                 setOpcaoSelecionada(opcoes[opcaoFocada])
+                break;
 
+            case 'Tab':
+                evento.preventDefault();
+                setOpcaoFocada(null)
+                alternarVisibilidade(false)
+                break;
+
+                case 'Escape':
+                evento.preventDefault();
+                setOpcaoFocada(null)
+                alternarVisibilidade(false)
+                break;
+
+            default:
                 break;
         }
     }
     return (<LabelEstilizada>
         {titulo}
-        <BotaoEstilizado 
-        onClick={() => alternarVisibilidade(!estadoAberta)}
-        onKeyDown={manipularTecladoTeclado}
+        <BotaoEstilizado
+            onClick={() => alternarVisibilidade(!estadoAberta)}
+            onKeyDown={manipularTecladoTeclado}
         >
             <div>
-                { opcaoSelecionada ? opcaoSelecionada.text : 'Selecione'}
+                {opcaoSelecionada ? opcaoSelecionada.text : 'Selecione'}
             </div>
             <div>
                 <span>{estadoAberta ? '▲' : '▼'}</span>
             </div>
         </BotaoEstilizado>
-            {estadoAberta && <ListaSuspensaEstilizada>
-                {opcoes.map((opcao, index) => <ItemListaSuspensaEstilizado
-                     key={opcao.value}
-                     focoAtivo={index ===opcaoFocada}
-                     onClick={() => setOpcaoSelecionada(opcao)}
-                     >
+        {estadoAberta && <ListaSuspensaEstilizada>
+            {opcoes.map((opcao, index) => <ItemListaSuspensaEstilizado
+                key={opcao.value}
+                focoAtivo={index === opcaoFocada}
+                onClick={() => setOpcaoSelecionada(opcao)}
+            >
                 {opcao.text}
-                </ItemListaSuspensaEstilizado>)}
-                </ListaSuspensaEstilizada>}
+            </ItemListaSuspensaEstilizado>)}
+        </ListaSuspensaEstilizada>}
 
     </LabelEstilizada>)
 }
