@@ -4,7 +4,11 @@ import Freelancer from './assets/freela.png'
 import { Link } from '../../componentes/Link/Link'
 import { Link as RouterLink } from "react-router-dom"
 import { Tipografia } from "../../componentes/Tipografia/Tipografia"
+import { useCadastroUsuarioContext } from "../../contexto/CadastroUsuario"
 const SelecaoCliente = () => {
+    
+    const {setPerfil} = useCadastroUsuarioContext()
+
     return (<div style={{ textAlign: 'center' }}>
         <Tipografia variante="h1" componente="h1">
             Crie o seu cadastro
@@ -15,7 +19,7 @@ const SelecaoCliente = () => {
         </Tipografia>
         <Row>
             <Col md={6} sm={12}>
-                <RouterLink to='interesses'>
+                <RouterLink to='interesses' onClick={() => setPerfil('cliente')}>
                     <img src={Cliente} alt="cliente"></img>
                     <Tipografia variante='body' componente='body'>
                         Sou cliente e preciso de um freela
